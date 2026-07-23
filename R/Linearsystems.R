@@ -1,0 +1,1675 @@
+#' Linear Model and various Transformations for Efficiency
+#'
+#' @description
+#' The linear model still remains a reference point towards advanced modeling of
+#'  some datasets as foundation for **Machine Learning**, **Data Science** and
+#'   **Artificial Intelligence** in spite of some of her weaknesses. The major
+#'    task in **modeling** is to compare various models before a selection is
+#'    made for one or for advanced modeling. Often, some trial and error methods
+#'     are used to decide which model to select. This is where this function is
+#'      unique. It helps to estimate 14 different linear models and provide
+#'      their coefficients in a formatted Table for quick comparison so that
+#'      time and energy are saved. The interesting thing about this function is
+#'       the simplicity, and it is a _one line_ code.
+#'
+#' @param y Vector of the dependent variable. This must be numeric.
+#' @param x Data frame of the explanatory variables.
+#' @param mod The group of linear models to be estimated. It takes value from 0
+#'  to 6. 0 = EDA (correlation, summary tables, Visuals means); 1 = Linear
+#'  systems, 2 = power models, 3 = polynomial models, 4 = root models,
+#'  5 = inverse models, 6 = all the 14 models
+#' @param limit Number of variables to be included in the coefficients plots
+#' @param Test test data to be used to predict y. If not supplied, the fitted y
+#'  is used hence may be identical with the fitted value. It is important to be
+#'   cautious if the data is to be divided between train and test subsets in
+#'   order to train and test the model. If the sample size is not sufficient to
+#'    have enough data for the test, errors are thrown up.
+#'
+#' @return A list with the following components:
+#' \item{\code{Visual means of the numeric variable}}{Plot of the means of the
+#'  _numeric_ variables.}
+#' \item{\code{Correlation plot}}{Plot of the Correlation Matrix of the
+#'  _numeric_ variables. To recover the plot, please use this canonical form
+#'   _object$`Correlation plot`$plot()_.}
+#' \item{\code{Linear}}{The full estimates of the Linear Model.}
+#' \item{\code{Linear with interaction}}{The full estimates of the Linear Model
+#'  with full interaction among the _numeric_ variables.}
+#' \item{\code{Semilog}}{The full estimates of the Semilog Model. Here the
+#' independent variable(s) is/are log-transformed.}
+#' \item{\code{Growth}}{The full estimates of the Growth Model. Here the
+#' dependent variable is log-transformed.}
+#' \item{\code{Double Log}}{The full estimates of the double-log Model. Here
+#' the both the dependent and independent variables are log-transformed.}
+#' \item{\code{Mixed-power model}}{The full estimates of the Mixed-power Model.
+#'  This is a combination of linear and double log models. It has significant
+#'  gains over the two models separately.}
+#' \item{\code{Translog model}}{The full estimates of the double-log Model with
+#'  full interaction of the _numeric_ variables.}
+#' \item{\code{Quadratic}}{The full estimates of the Quadratic Model.
+#' Here the square of _numeric_ independent variable(s) is/are included as
+#' independent variables.}
+#' \item{\code{Cubic model}}{The full estimates of the Cubic Model. Here the
+#' third-power (x^3) of _numeric_ independent variable(s) is/are included as
+#' independent variables.}
+#' \item{\code{Inverse y}}{The full estimates of the Inverse Model. Here the
+#' dependent variable is inverse-transformed (1 / y).}
+#' \item{\code{Inverse x}}{The full estimates of the Inverse Model. Here the
+#' independent variable is inverse-transformed (1 / x).}
+#' \item{\code{Inverse y & x}}{The full estimates of the Inverse Model. Here
+#' the dependent and independent variables are inverse-transformed 1 / y & 1 /
+#'  x).}
+#' \item{\code{Square root}}{The full estimates of the Square root Model. Here
+#' the independent variable is square root-transformed (x^0.5).}
+#' \item{\code{Cubic root}}{The full estimates of the cubic root Model. Here
+#' the independent variable is cubic root-transformed (x^1 / 3).}
+#' \item{\code{Significant plot of Linear}}{Plots of order of importance and
+#' significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Linear with interaction}}{Plots of order of
+#' importance and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Semilog}}{Plots of order of importance and
+#' significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Growth}}{Plots of order of importance and
+#' significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Double Log}}{Plots of order of importance
+#' and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Mixed-power model}}{Plots of order of
+#' importance and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Translog model}}{Plots of order of
+#' importance and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Quadratic}}{Plots of order of importance and
+#'  significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Cubic model}}{Plots of order of importance
+#' and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Inverse y}}{Plots of order of importance and
+#'  significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Inverse x}}{Plots of order of importance and
+#'  significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Inverse y & x}}{Plots of order of importance
+#'  and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Square root}}{Plots of order of importance
+#' and significance of estimates coefficients of the model.}
+#' \item{\code{Significant plot of Cubic root}}{Plots of order of importance
+#' and significance of estimates coefficients of the model.}
+#' \item{\code{Model Table}}{Formatted Tables of the coefficient estimates of
+#' all the models}
+#' \item{\code{Machine Learning Metrics}}{Metrics (47) for assessing model
+#' performance and metrics for diagnostic analysis of the error in estimation.}
+#' \item{\code{Table of Marginal effects}}{Tables of marginal effects of each
+#' model. Because of computational limitations, if you choose to estimate all
+#' the 14 models, the Tables are produced separately for the major
+#'  transformations. They can easily be compiled into one.}
+#' \item{\code{Fitted plots long format}}{Plots of the fitted estimates from
+#' each of the model.}
+#' \item{\code{Fitted plots wide format}}{Plots of the fitted estimates from
+#' each of the model.}
+#' \item{\code{Prediction plots long format}}{Plots of the predicted estimates
+#' from each of the model.}
+#' \item{\code{Prediction plots wide format}}{Plots of the predicted estimates
+#' from each of the model.}
+#' \item{\code{Naive effects plots long format}}{Plots of the `lm` effects.
+#' May be identical with plots of marginal effects if performed.}
+#' \item{\code{Naive effects plots wide format}}{Plots of the `lm` effects.
+#' May be identical with plots of marginal effects if performed.}
+#' \item{\code{Summary of numeric variables}}{of the dataset.}
+#' \item{\code{Summary of character variables}}{of the dataset.}
+#'
+#' @export Linearsystems
+#'
+#' @importFrom modelsummary modelsummary
+#' @importFrom dplyr select_if
+#' @importFrom ggplot2 geom_line
+#' @importFrom ggplot2 scale_fill_hue
+#' @importFrom ggplot2 scale_color_hue
+#' @importFrom ggplot2 theme_minimal
+#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 vars
+#' @importFrom ggplot2 stat_summary
+#' @importFrom ggplot2 geom_vline
+#' @importFrom ggplot2 geom_jitter
+#' @importFrom ggplot2 element_blank
+#' @importFrom marginaleffects avg_slopes
+#' @importFrom tibble rownames_to_column
+#' @importFrom utils globalVariables
+#'
+#' @name Linearsystems
+#'
+#' @aliases linearsystems
+#' @aliases sampling
+#'
+#' @examples
+#' library(tidyverse)
+#' library(ggtext)
+#'
+#' y <- linearsystems$MKTcost
+#' x <- select(linearsystems, -MKTcost)
+#' x <- sampling[, -1]
+#' y <- sampling$qOutput
+#' limit <- 20
+#' mod <-3
+#' Test <- NA
+#' Linearsystems(y, x, 3, 15)
+#'
+#' @usage Linearsystems(y, x, mod, limit, Test = NA)
+utils::globalVariables(c("Variables", "Model", "values", "Observed"))
+Linearsystems <- function(y, x, mod, limit, Test = NA) {
+  y1 <- y
+  Data <- cbind(y, x)
+
+  case <- if (ncol(Data) > 9) {
+    "complex"
+  } else {
+    "normal"
+  }
+  mod <- mod
+  xnum <- x %>%
+    dplyr::select_if(is.numeric)
+  xnum_n <- names(xnum)
+
+  xcha <- x %>%
+    dplyr::select_if(is.character)
+  xcha_n <- names(xcha)
+
+  y <- Data$y
+  Linear <- lm(y ~ ., data = Data)
+  Linears <- MLMetrics(Observed = Data, yvalue = y, modeli = Linear,
+                       K = 2, Name = "Linear", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+  v_Linear <- estimate_plot(model25 = Linear, limit = limit)
+  if (case != "complex") {
+    e_Linear <- marginaleffects::avg_slopes(Linear, by = TRUE)
+  } else {
+    e_Linear <- NULL
+  }
+  KNN <- Data %>% dplyr::select_if(is.numeric)
+  KNN1 <- quicksummary(x = KNN, Type = 1, Cut = deprecated(),
+                       Up = deprecated(), Down = deprecated())
+  KKC <- Data %>%
+    dplyr::select_if(is.character) %>%
+    summary()
+  if (length(KNN) < 10) {
+    YYY <- paste(c("y", paste(c(paste("x", 1 : (length(KNN)-1), sep = "")))))
+  } else if (length(KNN) == 10) {
+    YYY <- paste(c("y", paste(c(paste("x0", 1 : 9, sep = "")))))
+  } else{
+    YYY <- paste(c("y", paste(c(paste("x0", 1 : 9, sep = ""),
+                                (paste("x", 10 : (length(KNN) - 1),
+                                       sep = ""))))))
+  }
+  colnames(KNN) <- YYY
+
+  e_corplot <- corplot(stats::cor(KNN))
+
+  Data1 <- tidyr::pivot_longer(KNN, tidyr::everything(), names_to = "Variables",
+                               values_to = "values")
+
+  e_meanplot <- ggplot2::ggplot(Data1, ggplot2::aes(x = Variables,
+                                                    y = values)) +
+    ggplot2::geom_jitter(alpha = 0.7,
+                         shape = 16,
+                         width = 0.2,
+                         color = "cadetblue") +
+    ggplot2::geom_vline(
+      xintercept = seq(.5, length(unique(Data1$Variables)), by = 1),
+      color = "gray90",
+      linewidth = 1) +
+    ggplot2::stat_summary(fun = "mean",
+                          geom = "point",
+                          size = 5,
+                          alpha = 0.6,
+                          shape = 16,
+                          color = "tomato") +
+    ggplot2::stat_summary(
+      ggplot2::aes(label = round(ggplot2::after_stat(y), 1), fontface = "bold"),
+      fun = mean,
+      geom = "label", #try text if you want
+      #binwidth = 4,
+      alpha = 0.6,
+      label.size = NA, # remove border around label
+      vjust = -0.5,
+      color = "tomato") +
+    ggplot2::labs(
+      title = "Visualised means of the numeric variables in the model",
+      subtitle = "",
+      x = "Variables",
+      y = "Values") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(panel.grid = ggplot2::element_blank(),
+                   plot.subtitle = mmmd())
+
+  if (!mod %in% 0:6) {
+    message("Module out of range")
+    stop(message(paste("Choose between", 0,
+                       "and", 6)))
+  }
+  if (mod == 5) {
+    Data <- cbind(y, xnum, xcha)
+    `reciprocal in Y` <- lm((1 / (y + 1)) ~ ., data = Data)
+    reciY <- MLMetrics(Observed = Data, yvalue = y, modeli = `reciprocal in Y`,
+                       K = 2, Name = "Semilog in Y", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciY <- estimate_plot(model25 = `reciprocal in Y`, limit = limit)
+    if (case != "complex") {
+      e_reciY <- marginaleffects::avg_slopes(`reciprocal in Y`, by = TRUE)
+    } else {
+      e_reciY <- NULL
+    }
+    xnum8 <- 1 / (xnum + 1)
+    Data <- cbind(y = y, xnum8, xcha)
+    y <- Data$y
+    `reciprocal in X` <- lm(y ~ ., data = Data)
+    reciX <- MLMetrics(Observed = Data, yvalue = y, modeli = `reciprocal in X`,
+                       K = 2, Name = "Inverse in X", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciX <- estimate_plot(model25 = `reciprocal in X`, limit = limit)
+    if (case != "complex") {
+      e_reciX <- marginaleffects::avg_slopes(`reciprocal in X`, by = TRUE)
+    } else {
+      e_reciX <- NULL
+    }
+    Data$y <- y <- 1 / (y + 1)
+    `double reciprocal` <- lm(y ~ ., data = Data)
+    reciD <- MLMetrics(Observed = Data, yvalue = y, modeli = `double reciprocal`,
+                       K = 2, Name = "Inverse in Y & X", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciD <- estimate_plot(model25 = `double reciprocal`, limit = limit)
+    if (case != "complex") {
+      e_reciD  <- marginaleffects::avg_slopes(`double reciprocal`, by = TRUE)
+
+    } else {
+      e_reciD <- NULL
+    }
+  } else if (mod == 4) {
+    xnum3 <- xnum^.5
+    names(xnum3) <- paste("I", names(xnum3), sep = "")
+    DD3 <- cbind(y, xnum, xcha, xnum3)
+    Data <- DD3
+    y <- Data$y
+    `square root` <- lm(y ~ ., data = Data)
+    squares <- MLMetrics(Observed = Data, yvalue = y, modeli = `square root`,
+                         K = 2, Name = "Square root", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_square <- estimate_plot(model25 = `square root`, limit = limit)
+    if (case != "complex") {
+      e_square <- marginaleffects::avg_slopes(`square root`, by = TRUE)
+    } else {
+      e_square <- NULL
+    }
+    xnum4 <- xnum^(1 / 3)
+    names(xnum4) <- paste("I", names(xnum4), sep = "")
+    DD4 <- cbind(y, xnum, xcha, xnum4)
+    Data <- DD4
+    y <- Data$y
+    `cubic root` <- lm(y ~ ., data = Data)
+    cubics <- MLMetrics(Observed = Data, yvalue = y, modeli = `cubic root`,
+                        K = 2, Name = "Cubic root", Form = "LM", kutuf = 0,
+                        TTy = "Number")
+    v_cubic <- estimate_plot(model25 = `cubic root`, limit = limit)
+    if (case != "complex") {
+      e_cubic <- marginaleffects::avg_slopes(`cubic root`, by = TRUE)
+    } else {
+      e_cubic <- NULL
+    }
+  } else if (mod == 3) {
+    xnum1 <- xnum^2
+    names(xnum1) <- paste("I", names(xnum1), sep = "")
+    DD2 <- cbind(y, xnum, xcha, xnum1)
+    Data <- DD2
+    y <- Data$y
+    quadratic <- lm(y ~ ., data = Data)
+    quadratics <- MLMetrics(Observed = Data, yvalue = y, modeli = quadratic,
+                            K = 2, Name = "Quadratic", Form = "LM", kutuf = 0,
+                            TTy = "Number")
+    v_quadratic <- estimate_plot(model25 = quadratic, limit = limit)
+    if (case != "complex") {
+      e_quadratic <- marginaleffects::avg_slopes(quadratic, by = TRUE)
+    } else {
+      e_quadratic <- NULL
+    }
+    xnum2 <- xnum^3
+    names(xnum2) <- paste("IC", names(xnum), sep = "")
+    Data <- cbind(DD2, xnum2)
+    y <- Data$y
+    cube <- lm(y ~ ., data = Data)
+    cubes <- MLMetrics(Observed = Data, yvalue = y, modeli = cube,
+                       K = 2, Name = "Cube", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_cube <- estimate_plot(model25 = cube, limit = limit)
+    if (case != "complex") {
+      e_cube  <- marginaleffects::avg_slopes(cube, by = TRUE)
+    } else {
+      e_cube  <- NULL
+    }
+  }else if (mod == 2) {
+    Data <- cbind(y = log(y + 1), xnum, xcha)
+    y <- Data$y
+    loglin <- lm(y ~ ., data = Data)
+    loglins <- MLMetrics(Observed = Data, yvalue = y, modeli = loglin,
+                         K = 2, Name = "Semilog in X", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_loglin <- estimate_plot(model25 = loglin, limit = limit)
+    if (case != "complex") {
+      e_loglin  <- marginaleffects::avg_slopes(loglin, by = TRUE)
+    } else {
+      e_loglin  <- NULL
+    }
+    xnum5 <- log(xnum + 1)
+    DD5 <- cbind(y, xnum5, xcha)
+    Data <- DD5
+    y <- Data$y
+    linlog <- lm(y ~ ., data = Data)
+    linlogs <- MLMetrics(Observed = Data, yvalue = y, modeli = linlog,
+                         K = 2, Name = "Semilog in X", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_linlog <- estimate_plot(model25 = linlog, limit = limit)
+    if (case != "complex") {
+      e_linlog  <- marginaleffects::avg_slopes(linlog, by = TRUE)
+    } else {
+      e_linlog  <- NULL
+    }
+    names(xnum5) <- paste("I", names(xnum5), sep = "")
+    DD6 <- cbind(y, xnum, xcha, xnum5)
+    Data <- DD6
+    y <- Data$y
+    perlog <- lm(y ~ ., data = Data)
+    perlogs <- MLMetrics(Observed = Data, yvalue = y, modeli = perlog,
+                         K = 2, Name = "Mixed-power", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_perlog <- estimate_plot(model25 = perlog, limit = limit)
+    if (case != "complex") {
+      e_perlog <- marginaleffects::avg_slopes(perlog, by = TRUE)
+    } else {
+      e_perlog <- NULL
+    }
+    DD7 <- cbind(y = y, xnum)
+    DD7 <- log(DD7 + 1)
+    Data <- cbind(DD7, xcha)
+    y = Data$y
+    loglog <- lm(y ~ ., data = Data)
+    loglogs <- MLMetrics(Observed = Data, yvalue = y, modeli = loglog,
+                         K = 2, Name = "Cobb Douglas", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_loglog <- estimate_plot(model25 = loglog, limit = limit)
+    if (case != "complex") {
+      e_loglog  <- marginaleffects::avg_slopes(loglog, by = TRUE)
+    } else {
+      e_loglog  <- NULL
+    }
+    xnum6 <- log(xnum + 1)
+    xnum6_n <- names(xnum6)
+    xnum7 <- xnum6^2
+    xnum7_n <- names(xnum7)
+
+    DD7 <- cbind(xnum6, xnum7, xcha)
+    if (length(xcha) == 0) {
+      names(DD7) <- paste(c(paste(xnum6_n, sep = ""),
+                            paste("I", xnum7_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum6_n, "`",
+                                                       sep = "",
+                                                       collapse = "*"),
+                                                 paste("`", "I", xnum7_n, "`",
+                                                       sep = "",
+                                                       collapse = "+")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    } else {
+      names(DD7) <- paste(c(paste(xnum6_n, sep = ""),
+                            paste("I", xnum7_n, sep = ""), paste(xcha_n,
+                                                                 sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum6_n, "`",
+                                                       sep = "",
+                                                       collapse = "*"),
+                                                 paste("`", "I", xnum7_n, "`",
+                                                       sep = "",
+                                                       collapse = "+"),
+                                                 paste("`", xcha_n, "`",
+                                                       sep = "",
+                                                       collapse = " + ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    }
+
+    Data <- cbind(y = log(y + 1), DD7)
+    y <- Data$y
+    if (case != "complex") {
+      translog <- lm(MOD, data = Data)
+      translogs <- MLMetrics(Observed = Data, yvalue = y, modeli = translog,
+                             K = 2, Name = "Translog", Form = "LM", kutuf = 0,
+                             TTy = "Number")
+      v_translog <- estimate_plot(model25 = translog, limit = limit)
+      e_translog  <- marginaleffects::avg_slopes(translog, by = TRUE)
+    } else {
+      translog <- NULL
+      translogs <- NULL
+      v_translog <- NULL
+      e_translog  <- NULL
+    }
+  } else if (mod == 1) {
+    DD0 <- cbind(xnum, xcha)
+    DDn <- names(DD0)
+    if (length(xcha) == 0) {
+      names(DD0) <- paste(c(paste(xnum_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum_n, "`",
+                                                       sep = "",
+                                                       collapse = " * ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    } else {
+      names(DD0) <- paste(c(paste(xnum_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum_n, "`",
+                                                       sep = "",
+                                                       collapse = " * "),
+                                                 paste("`", xcha_n, "`",
+                                                       sep = "",
+                                                       collapse = " + ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    }
+
+    Data <- cbind(y, DD0)
+    if (case != "complex") {
+      LinearI <- lm(MOD, data = Data)
+      LinearIs <- MLMetrics(Observed = Data, yvalue = y, modeli = LinearI,
+                            K = 2, Name = "Linear", Form = "LM", kutuf = 0,
+                            TTy = "Number")
+      v_LinearI <- estimate_plot(model25 = LinearI, limit = limit)
+      e_LinearI    <- marginaleffects::avg_slopes(LinearI, by = TRUE)
+    } else {
+      LinearI <- NULL
+      LinearIs <- NULL
+      v_LinearI <- NULL
+      e_LinearI <- NULL
+    }
+  } else if (mod == 0) {
+    KNN1 <- KNN1
+
+    KKC <- KKC
+    e_corplot <- e_corplot
+
+    e_meanplot <- e_meanplot
+  } else {
+    DD0 <- cbind(xnum, xcha)
+    DDn <- names(DD0)
+    if (length(xcha) == 0) {
+      names(DD0) <- paste(c(paste(xnum_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum_n, "`",
+                                                       sep = "",
+                                                       collapse = " * ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    } else {
+      names(DD0) <- paste(c(paste(xnum_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum_n, "`",
+                                                       sep = "",
+                                                       collapse = " * "),
+                                                 paste("`", xcha_n, "`",
+                                                       sep = "",
+                                                       collapse = " + ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    }
+    Data <- cbind(y, DD0)
+    if (case != "complex") {
+      LinearI <- lm(MOD, data = Data)
+      LinearIs <- MLMetrics(Observed = Data, yvalue = y, modeli = LinearI,
+                            K = 2, Name = "Linear", Form = "LM", kutuf = 0,
+                            TTy = "Number")
+      v_LinearI <- estimate_plot(model25 = LinearI, limit = limit)
+      e_LinearI    <- marginaleffects::avg_slopes(LinearI, by = TRUE)
+    } else {
+      LinearI <- NULL
+      LinearIs <- NULL
+      v_LinearI <- NULL
+      e_LinearI <- NULL
+    }
+    Data <- cbind(y, xnum, xcha)
+    `reciprocal in Y` <- lm((1 / (y + 1)) ~ ., data = Data)
+    reciY <- MLMetrics(Observed = Data, yvalue = y, modeli = `reciprocal in Y`,
+                       K = 2, Name = "Semilog in Y", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciY <- estimate_plot(model25 = `reciprocal in Y`, limit = limit)
+    if (case != "complex") {
+      e_reciY <- marginaleffects::avg_slopes(`reciprocal in Y`, by = TRUE)
+    } else {
+      e_reciY <- NULL
+    }
+    Data <- cbind(y = log(y + 1), xnum, xcha)
+    y <- Data$y
+    loglin <- lm(y ~ ., data = Data)
+    loglins <- MLMetrics(Observed = Data, yvalue = y, modeli = loglin,
+                         K = 2, Name = "Semilog in X", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_loglin <- estimate_plot(model25 = loglin, limit = limit)
+    if (case != "complex") {
+      e_loglin  <- marginaleffects::avg_slopes(loglin, by = TRUE)
+    } else {
+      e_loglin  <- NULL
+    }
+    xnum1 <- xnum^2
+    names(xnum1) <- paste("I", names(xnum1), sep = "")
+    DD2 <- cbind(y, xnum, xcha, xnum1)
+    Data <- DD2
+    y <- Data$y
+    quadratic <- lm(y ~ ., data = Data)
+    quadratics <- MLMetrics(Observed = Data, yvalue = y, modeli = quadratic,
+                            K = 2, Name = "Quadratic", Form = "LM", kutuf = 0,
+                            TTy = "Number")
+    v_quadratic <- estimate_plot(model25 = quadratic, limit = limit)
+    if (case != "complex") {
+      e_quadratic <- marginaleffects::avg_slopes(quadratic, by = TRUE)
+    } else {
+      e_quadratic <- NULL
+    }
+    xnum2 <- xnum^3
+    names(xnum2) <- paste("IC", names(xnum), sep = "")
+    Data <- cbind(DD2, xnum2)
+    y <- Data$y
+    cube <- lm(y ~ ., data = Data)
+    cubes <- MLMetrics(Observed = Data, yvalue = y, modeli = cube,
+                       K = 2, Name = "Cube", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_cube <- estimate_plot(model25 = cube, limit = limit)
+    if (case != "complex") {
+      e_cube  <- marginaleffects::avg_slopes(cube, by = TRUE)
+    } else {
+      e_cube  <- NULL
+    }
+    xnum3 <- xnum^.5
+    names(xnum3) <- paste("I", names(xnum3), sep = "")
+    DD3 <- cbind(y, xnum, xcha, xnum3)
+    Data <- DD3
+    y <- Data$y
+    `square root` <- lm(y ~ ., data = Data)
+    squares <- MLMetrics(Observed = Data, yvalue = y, modeli = `square root`,
+                         K = 2, Name = "Square root", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_square <- estimate_plot(model25 = `square root`, limit = limit)
+    if (case != "complex") {
+      e_square <- marginaleffects::avg_slopes(`square root`, by = TRUE)
+    } else {
+      e_square <- NULL
+    }
+    xnum4 <- xnum^(1 / 3)
+    names(xnum4) <- paste("I", names(xnum4), sep = "")
+    DD4 <- cbind(y, xnum, xcha, xnum4)
+    Data <- DD4
+    y <- Data$y
+    `cubic root` <- lm(y ~ ., data = Data)
+    cubics <- MLMetrics(Observed = Data, yvalue = y, modeli = `cubic root`,
+                        K = 2, Name = "Cubic root", Form = "LM", kutuf = 0,
+                        TTy = "Number")
+    v_cubic <- estimate_plot(model25 = `cubic root`, limit = limit)
+    if (case != "complex") {
+      e_cubic <- marginaleffects::avg_slopes(`cubic root`, by = TRUE)
+    } else {
+      e_cubic <- NULL
+    }
+    xnum5 <- log(xnum + 1)
+    DD5 <- cbind(y, xnum5, xcha)
+    Data <- DD5
+    y <- Data$y
+    linlog <- lm(y ~ ., data = Data)
+    linlogs <- MLMetrics(Observed = Data, yvalue = y, modeli = linlog,
+                         K = 2, Name = "Semilog in X", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_linlog <- estimate_plot(model25 = linlog, limit = limit)
+    if (case != "complex") {
+      e_linlog  <- marginaleffects::avg_slopes(linlog, by = TRUE)
+    } else {
+      e_linlog  <- NULL
+    }
+    names(xnum5) <- paste("I", names(xnum5), sep = "")
+    DD6 <- cbind(y, xnum, xcha, xnum5 )
+    Data <- DD6
+    y <- Data$y
+    perlog <- lm(y ~ ., data = Data)
+    perlogs <- MLMetrics(Observed = Data, yvalue = y, modeli = perlog,
+                         K = 2, Name = "Mixed-power", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_perlog <- estimate_plot(model25 = perlog, limit = limit)
+    if (case != "complex") {
+      e_perlog <- marginaleffects::avg_slopes(perlog, by = TRUE)
+    } else {
+      e_perlog <- NULL
+    }
+    DD7 <- cbind(y = y, xnum)
+    DD7 <- log(DD7 + 1)
+    Data <- cbind(DD7, xcha)
+    y <- Data$y
+    loglog <- lm(y ~ ., data = Data)
+    loglogs <- MLMetrics(Observed = Data, yvalue = y, modeli = loglog,
+                         K = 2, Name = "Cobb Douglas", Form = "LM", kutuf = 0,
+                         TTy = "Number")
+    v_loglog <- estimate_plot(model25 = loglog, limit = limit)
+    if (case != "complex") {
+      e_loglog  <- marginaleffects::avg_slopes(loglog, by = TRUE)
+    } else {
+      e_loglog  <- NULL
+    }
+    xnum6 <- log(xnum + 1)
+    xnum6_n <- names(xnum6)
+    xnum7 <- xnum6^2
+    xnum7_n <- names(xnum7)
+
+    DD7 <- cbind(xnum6, xnum7, xcha)
+    if (length(xcha) == 0) {
+      names(DD7) <- paste(c(paste(xnum6_n, sep = ""),
+                            paste("I", xnum7_n, sep = ""),
+                            paste(xcha_n,  sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum6_n, "`",
+                                                       sep = "",
+                                                       collapse = "*"),
+                                                 paste("`", "I", xnum7_n, "`",
+                                                       sep = "",
+                                                       collapse = "+")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    } else {
+      names(DD7) <- paste(c(paste(xnum6_n, sep = ""),
+                            paste("I", xnum7_n, sep = ""), paste(xcha_n,
+                                                                 sep = "")))
+      MOD <- stats::formula(paste(c("y", paste(c(paste("`", xnum6_n, "`",
+                                                       sep = "",
+                                                       collapse = "*"),
+                                                 paste("`", "I", xnum7_n, "`",
+                                                       sep = "",
+                                                       collapse = "+"),
+                                                 paste("`", xcha_n, "`",
+                                                       sep = "",
+                                                       collapse = " + ")),
+                                               collapse = "+")),
+                                  collapse = " ~ "))
+    }
+    Data <- cbind(y = log(y + 1), DD7)
+    y <- Data$y
+    if (case != "complex") {
+      translog <- lm(MOD, data = Data)
+      translogs <- MLMetrics(Observed = Data, yvalue = y, modeli = translog,
+                             K = 2, Name = "Translog", Form = "LM", kutuf = 0,
+                             TTy = "Number")
+      v_translog <- estimate_plot(model25 = translog, limit = limit)
+      e_translog  <- marginaleffects::avg_slopes(translog, by = TRUE)
+    } else {
+      translog <- NULL
+      translogs <- NULL
+      v_translog <- NULL
+      e_translog  <- NULL
+    }
+    xnum8 <- 1 / (xnum + 1)
+    Data <- cbind(y = y, xnum8, xcha)
+    y <- Data$y
+    `reciprocal in X` <- lm(y ~ ., data = Data)
+    reciX <- MLMetrics(Observed = Data, yvalue = y, modeli = `reciprocal in X`,
+                       K = 2, Name = "Inverse in X", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciX <- estimate_plot(model25 = `reciprocal in X`, limit = limit)
+    if (case != "complex") {
+      e_reciX <- marginaleffects::avg_slopes(`reciprocal in X`, by = TRUE)
+    } else {
+      e_reciX <- NULL
+    }
+    Data$y <- y <- 1 / (y + 1)
+    `double reciprocal` <- lm(y ~ ., data = Data)
+    reciD <- MLMetrics(Observed = Data, yvalue = y, modeli = `double reciprocal`,
+                       K = 2, Name = "Inverse in Y & X", Form = "LM", kutuf = 0,
+                       TTy = "Number")
+    v_reciD <- estimate_plot(model25 = `double reciprocal`, limit = limit)
+    if (case != "complex") {
+      e_reciD <- marginaleffects::avg_slopes(`double reciprocal`, by = TRUE)
+    } else {
+      e_reciD <- NULL
+    }
+  }
+  Test <- Test
+  AA <- dim(Test)
+
+  if (is.null(AA)) {
+    Test <- Test
+  } else {
+    Test <- Test
+    xt <- Test[, -1]
+
+    xnum <- xt %>%
+      dplyr::select_if(is.numeric)
+    xnum_n <- names(xnum)
+
+    xcha <- xt %>%
+      dplyr::select_if(is.character)
+    xcha_n <- names(xcha)
+
+    xnum1 <- xnum^2
+    names(xnum1) <- paste("I", names(xnum1), sep = "")
+    Test_q <- cbind(xnum, xcha, xnum1)
+
+    xnum2 <- xnum^3
+    names(xnum2) <- paste("IC", names(xnum), sep = "")
+    Test_c <- cbind(Test_q, xnum2)
+
+    xnum3 <- xnum^.5
+    names(xnum3) <- paste("I", names(xnum3), sep = "")
+    Test_s <- cbind(xnum, xcha, xnum3)
+
+    xnum4 <- xnum^(1 / 3)
+    names(xnum4) <- paste("I", names(xnum4), sep = "")
+    Test_cr <- cbind(xnum, xcha, xnum4)
+
+    xnum5 <- log(xnum + 1)
+    Test_l <- cbind(xnum5, xcha)
+
+    names(xnum5) <- paste("I", names(xnum5), sep = "")
+    Test_p <- cbind(xnum, xcha, xnum5)
+
+    DD7 <- log(xnum + 1)
+    Test_ll <- cbind(DD7, xcha)
+
+    xnum6 <- log(xnum + 1)
+    xnum6_n <- names(xnum6)
+    xnum7 <- xnum6^2
+    xnum7_n <- names(xnum7)
+    Test_t <- cbind(xnum6, xnum7, xcha)
+    names(Test_t) <- paste(c(paste(xnum6_n, sep = ""),
+                             paste("I", xnum7_n, sep = ""), paste(xcha_n,
+                                                                  sep = "")))
+
+    xnum8 <- 1 / (xnum + 1)
+    Test_X <- cbind(xnum8, xcha)
+  }
+
+  if (mod == 5) {
+
+    if (case != "complex") {
+      e_list <- list(Linear                   = e_Linear,
+                     `Reciprocal in X`         = e_reciX,
+                     `Reciprocal in Y`         = e_reciY,
+                     `Double reciprocal`       = e_reciD)
+      e_table <- modelsummary::modelsummary(e_list,
+                                            shape = term : contrast ~ model,
+                                            stars = TRUE)
+    } else {
+      e_table <- NULL
+    }
+    m_list <- list(Linear                    = Linear,
+                   `Reciprocal in X`         = `reciprocal in X`,
+                   `Reciprocal in Y`         = `reciprocal in Y`,
+                   `Double reciprocal`       = `double reciprocal`)
+    ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+
+    Anova <- stats::anova(Linear, `reciprocal in X`, `reciprocal in X`,
+                          `double reciprocal`)
+    Anova <- tibble::rownames_to_column(Anova, var = "Model")
+    Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+    Fitted <- data.frame(Observed            = y1,
+                         Linear              = fitted.values(Linear),
+                         `Reciprocal in X`   = fitted.values(`reciprocal in X`),
+                         `Reciprocal in Y`   =
+                           1 / fitted.values(`reciprocal in Y`),
+                         `Double reciprocal` =
+                           1 / fitted.values(`double reciprocal`))
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+    if (is.null(AA)) {
+      Predicted <- data.frame(Observed            = y1,
+                              Linear              = predict(Linear),
+                              `Reciprocal in X`   = predict(`reciprocal in X`),
+                              `Reciprocal in Y`   =
+                                1 / predict(`reciprocal in Y`),
+                              `Double reciprocal` =
+                                1 / predict(`double reciprocal`))
+    } else {
+      Predicted <- data.frame(Observed            = y1,
+                              Linear              = predict(Linear, Test),
+                              `Reciprocal in X`   =
+                                predict(`reciprocal in X`, Test_X),
+                              `Reciprocal in Y`   =
+                                1 / predict(`reciprocal in Y`, Test),
+                              `Double reciprocal` =
+                                1 / predict(`double reciprocal`, Test_X))
+    }
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <-      data.frame(Observed            = y1,
+                               Linear              = Linear[["effects"]],
+                               `Reciprocal in X`   =
+                                 `reciprocal in X`[["effects"]],
+                               `Reciprocal in Y`   =
+                                 1 / `reciprocal in Y`[["effects"]],
+                               `Double reciprocal` =
+                                 1 / `double reciprocal`[["effects"]])
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+
+    evaluation <- data.frame(cbind(Linear         = Linears,
+                                   `Reciprocal in X`         = reciX,
+                                   `Reciprocal in Y`         = reciY,
+                                   `Double reciprocal`       = reciD))
+    evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+  } else if (mod == 4) {
+    if (case != "complex") {
+      e_list <- list(Linear                    = e_Linear,
+                     `Square root`             = e_square,
+                     `Cubic root`              = e_cubic)
+      e_table <- modelsummary::modelsummary(e_list,
+                                            shape = term : contrast ~ model,
+                                            stars = TRUE)
+    } else {
+      e_table <- NULL
+    }
+
+    m_list <- list(Linear                    = Linear,
+                   `Square root`             = `square root`,
+                   `Cubic root`              = `cubic root`)
+    ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+
+    Anova <- stats::anova(Linear, `square root`, `cubic root`)
+    Anova <- tibble::rownames_to_column(Anova, var = "Model")
+    Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+    Fitted <- data.frame(Observed           = y1,
+                         Linear             = fitted.values(Linear),
+                         `Square root`      = fitted.values(`square root`),
+                         `Cubic root`       = fitted.values(`cubic root`))
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+
+    if (is.null(AA)) {
+      Predicted <- data.frame(Observed        = y1,
+                              Linear          = predict(Linear),
+                              `Square root`   = predict(`square root`),
+                              `Cubic root`    = predict(`cubic root`))
+    } else {
+      Predicted <- data.frame(Observed        = y1,
+                              Linear          = predict(Linear, Test),
+                              `Square root`   = predict(`square root`, Test_s),
+                              `Cubic root`    = predict(`cubic root`, Test_cr))
+    }
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <-      data.frame(Observed       = y1,
+                               Linear         = Linear[["effects"]],
+                               `Square root`  = `square root`[["effects"]],
+                               `Cubic root`   = `cubic root`[["effects"]])
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+
+    evaluation <- data.frame(cbind(Linear         = Linears,
+                                   `Square root`             = squares,
+                                   `Cubic root`              = cubics))
+    evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+  } else if (mod == 3) {
+    if (case != "complex") {
+      e_list <- list(Linear                    = e_Linear,
+                     Quadratic                 = e_quadratic,
+                     Cubic                     = e_cube)
+      e_table <- modelsummary::modelsummary(e_list,
+                                            shape = term : contrast ~ model,
+                                            stars = TRUE)
+    } else {
+      e_table <- NULL
+    }
+    m_list <- list(Linear                    = Linear,
+                   Quadratic                 = quadratic,
+                   Cubic                     = cube)
+    ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+
+    Anova <- stats::anova(Linear, quadratic, cube)
+    Anova <- tibble::rownames_to_column(Anova, var = "Model")
+    Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+    Fitted <- data.frame(Observed                   = y1,
+                         Linear                     = fitted.values(Linear),
+                         Quadratic                   = fitted.values(quadratic),
+                         Cubic                       = fitted.values(cube))
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+
+    if (is.null(AA)) {
+      Predicted <- data.frame(Observed                  = y1,
+                              Linear                    = predict(Linear),
+                              Quadratic                 = predict(quadratic),
+                              Cubic                     = predict(cube))
+    } else {
+      Predicted <- data.frame(Observed        = y1,
+                              Linear          = predict(Linear, Test),
+                              `Square root`   = predict(quadratic, Test_s),
+                              `Cubic root`    = predict(cube, Test_c))
+    }
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <-      data.frame(Observed         = y1,
+                               Linear           = Linear[["effects"]],
+                               Quadratic        = quadratic[["effects"]],
+                               Cubic            = cube[["effects"]])
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+
+    evaluation <- data.frame(cbind(Linear         = Linears,
+                                   Quadratic                 = quadratics,
+                                   Cubic                     = cubes))
+    evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+  }else if (mod == 2) {
+    if (case != "complex") {
+      e_list <- list(Linear                    = e_Linear,
+                     `Cobb Douglas`            = e_loglog,
+                     Linlog                    = e_linlog,
+                     Loglin                    = e_loglin,
+                     `Mixed-power`             = e_perlog,
+                     Translog                  = e_translog)
+
+      m_list <- list(Linear                    = Linear,
+                     `Cobb Douglas`            = loglog,
+                     Linlog                    = linlog,
+                     Loglin                    = loglin,
+                     `Mixed-power`            = perlog,
+                     Translog                  = translog)
+
+      Fitted <- data.frame(Observed           = y1,
+                           Linear             = fitted.values(Linear),
+                           `Cobb Douglas`     = exp(fitted.values(loglog)),
+                           Translog           = exp(fitted.values(translog)),
+                           `Mixed-power`      = exp(fitted.values(perlog)),
+                           Linlog             = fitted.values(linlog),
+                           Loglin             = exp(fitted.values(loglin)))
+
+      if (is.null(AA)) {
+        Predicted <- data.frame(Observed          = y1,
+                                Linear            = predict(Linear),
+                                `Cobb Douglas`    = exp(predict(loglog)),
+                                Translog          = exp(predict(translog)),
+                                `Mixed-power`     = exp(predict(perlog)),
+                                Linlog            = predict(linlog),
+                                Loglin            = exp(predict(loglin)))
+      } else {
+        Predicted <- data.frame(Observed        = y1,
+                                Linear          = predict(Linear, Test),
+                                `Cobb Douglas`  = exp(predict(loglog, Test_ll)),
+                                Translog      = exp(predict(translog, Test_t)),
+                                `Mixed-power`   = exp(predict(perlog, Test_p)),
+                                Linlog          = predict(linlog, Test_l),
+                                Loglin          = exp(predict(loglin, Test)))
+      }
+      Effects <-      data.frame(Observed         = y1,
+                                 Linear           = Linear[["effects"]],
+                                 `Cobb Douglas`   = exp(loglog[["effects"]]),
+                                 Translog         = exp(translog[["effects"]]),
+                                 `Mixed-power`    = exp(perlog[["effects"]]),
+                                 Linlog           = linlog[["effects"]],
+                                 Loglin           = exp(loglin[["effects"]]))
+      evaluation <- data.frame(cbind(Linear         = Linears,
+                                     `Cobb Douglas`            = loglogs,
+                                     Linlog                    = linlogs,
+                                     Loglin                    = loglins,
+                                     `Mixed-power`             = perlogs,
+                                     Translog                  = translogs))
+      e_table <- modelsummary::modelsummary(e_list,
+                                            shape = term : contrast ~ model,
+                                            stars = TRUE)
+    } else {
+      e_list <- NULL
+      e_table <- NULL
+      m_list <- list(Linear                    = Linear,
+                     `Cobb Douglas`            = loglog,
+                     Linlog                    = linlog,
+                     Loglin                    = loglin,
+                     `Mixed-power`            = perlog)
+
+      Fitted <- data.frame(Observed           = y1,
+                           Linear             = fitted.values(Linear),
+                           `Cobb Douglas`     = exp(fitted.values(loglog)),
+                           `Mixed-power`      = exp(fitted.values(perlog)),
+                           Linlog             = fitted.values(linlog),
+                           Loglin             = exp(fitted.values(loglin)))
+
+      if (is.null(AA)) {
+        Predicted <- data.frame(Observed          = y1,
+                                Linear            = predict(Linear),
+                                `Cobb Douglas`    = exp(predict(loglog)),
+                                `Mixed-power`     = exp(predict(perlog)),
+                                Linlog            = predict(linlog),
+                                Loglin            = exp(predict(loglin)))
+      } else {
+        Predicted <- data.frame(Observed        = y1,
+                                Linear          = predict(Linear, Test),
+                                `Cobb Douglas`  = exp(predict(loglog, Test_ll)),
+                                `Mixed-power`   = exp(predict(perlog, Test_p)),
+                                Linlog          = predict(linlog, Test_l),
+                                Loglin          = exp(predict(loglin, Test)))
+      }
+      Effects <-      data.frame(Observed         = y1,
+                                 Linear           = Linear[["effects"]],
+                                 `Cobb Douglas`   = exp(loglog[["effects"]]),
+                                 `Mixed-power`    = exp(perlog[["effects"]]),
+                                 Linlog           = linlog[["effects"]],
+                                 Loglin           = exp(loglin[["effects"]]))
+      evaluation <- data.frame(cbind(Linear         = Linears,
+                                     `Cobb Douglas`            = loglogs,
+                                     Linlog                    = linlogs,
+                                     Loglin                    = loglins,
+                                     `Mixed-power`             = perlogs))
+    }
+
+    ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+
+    Anova <- stats::anova(Linear, loglog, perlog, translog, linlog, loglin)
+    Anova <- tibble::rownames_to_column(Anova, var = "Model")
+    Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+    evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+  } else if (mod == 1) {
+    if (case != "complex") {
+      if (is.null(e_LinearI)) {
+        e_list <- list(Linear                    = e_Linear)
+        m_list <- list(Linear                    = Linear)
+
+        Fitted <- data.frame(Observed                   = y1,
+                             Linear                     = fitted.values(Linear))
+
+        if (is.null(AA)) {
+          Predicted <- data.frame(Observed                  = y1,
+                                  Linear                    = predict(Linear))
+        } else {
+          Predicted <- data.frame(Observed         = y1,
+                                  Linear           = predict(Linear, Test))
+        }
+
+        Effects <-      data.frame(Observed        = y1,
+                                   Linear          = Linear[["effects"]])
+
+        evaluation <- data.frame(cbind(Linear         = Linears,
+                                       `Linear with interaction` = LinearIs))
+        e_table <- modelsummary::modelsummary(e_list,
+                                              shape = term : contrast ~ model,
+                                              stars = TRUE)
+      } else {
+        e_list <- list(Linear                    = e_Linear,
+                       `Linear with interaction` = e_LinearI)
+        m_list <- list(Linear                    = Linear,
+                       `Linear with interaction` = LinearI)
+
+        Fitted <- data.frame(Observed                   = y1,
+                             Linear                     = fitted.values(Linear),
+                             `Linear with interaction`  =
+                               fitted.values(LinearI))
+
+        if (is.null(AA)) {
+          Predicted <- data.frame(Observed                  = y1,
+                                  Linear                    = predict(Linear),
+                                  `Linear with interaction` = predict(LinearI))
+        } else {
+          Predicted <- data.frame(Observed                  = y1,
+                                  Linear                    =
+                                    predict(Linear, Test),
+                                  `Linear with interaction` =
+                                    predict(LinearI, Test))
+        }
+
+        Effects <-      data.frame(Observed                  = y1,
+                                   Linear = Linear[["effects"]],
+                                   `Linear with interaction` =
+                                     LinearI[["effects"]])
+
+        evaluation <- data.frame(cbind(Linear         = Linears,
+                                       `Linear with interaction` = LinearIs))
+        e_table <- modelsummary::modelsummary(e_list,
+                                              shape = term : contrast ~ model,
+                                              stars = TRUE)
+
+        ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+      }
+    } else {
+      e_list <- NULL
+
+      m_list <- list(Linear                    = Linear)
+
+      Fitted <- data.frame(Observed                   = y1,
+                           Linear                     = fitted.values(Linear))
+
+      if (is.null(AA)) {
+        Predicted <- data.frame(Observed                  = y1,
+                                Linear                    = predict(Linear))
+      } else {
+        Predicted <- data.frame(Observed                  = y1,
+                                Linear        = predict(Linear, Test))
+      }
+
+      Effects <-      data.frame(Observed                  = y1,
+                                 Linear           = Linear[["effects"]])
+
+      evaluation <- data.frame(cbind(Linear         = Linears))
+      e_table <- NULL
+
+      ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+    }
+
+
+    Anova <- stats::anova(Linear, LinearI)
+    Anova <- tibble::rownames_to_column(Anova, var = "Model")
+    Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+    evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+  } else if (mod == 0) {
+    message("EDA...", "\n")
+  } else {
+    if (case != "complex") {
+      m_list <- list(Linear                    = Linear,
+                     `Cobb Douglas`            = loglog,
+                     Linlog                    = linlog,
+                     Loglin                    = loglin,
+                     `Reciprocal in X`         = `reciprocal in X`,
+                     `Reciprocal in Y`         = `reciprocal in Y`,
+                     `Double reciprocal`       = `double reciprocal`,
+                     Quadratic                 = quadratic,
+                     `Square root`             = `square root`,
+                     `Cubic root`              = `cubic root`,
+                     Cubic                     = cube,
+                     `Mixed-power`             = perlog,
+                     Translog                  = translog,
+                     `Linear with interaction` = LinearI)
+
+      e_list <- list(Linear                      = e_Linear,
+                     `Linear with interaction` = e_LinearI)
+      e_table1 <- modelsummary::modelsummary(e_list,
+                                             shape = term : contrast ~ model,
+                                             stars = TRUE)
+
+      e_list <- list(`Cobb Douglas`            = e_loglog,
+                     Linlog                    = e_linlog,
+                     Loglin                    = e_loglin,
+                     `Mixed-power`             = e_perlog,
+                     Translog                  = e_translog)
+      e_table2 <- modelsummary::modelsummary(e_list,
+                                             shape = term : contrast ~ model,
+                                             stars = TRUE)
+
+      e_list <- list(`Reciprocal in X`         = e_reciX,
+                     `Reciprocal in Y`         = e_reciY,
+                     `Double reciprocal`       = e_reciD)
+      e_table3 <- modelsummary::modelsummary(e_list,
+                                             shape = term : contrast ~ model,
+                                             stars = TRUE)
+
+      e_list <- list(Quadratic                 = e_quadratic,
+                     Cubic                     = e_cube)
+      e_table4 <- modelsummary::modelsummary(e_list,
+                                             shape = term : contrast ~ model,
+                                             stars = TRUE)
+
+      e_list <- list(`Square root`             = e_square,
+                     `Cubic root`              = e_cubic)
+      e_table5 <- modelsummary::modelsummary(e_list,
+                                             shape = term : contrast ~ model,
+                                             stars = TRUE)
+
+      Fitted <- data.frame(Observed                   = y1,
+                           Linear                     = fitted.values(Linear),
+                           `Linear with interaction`  = fitted.values(LinearI),
+                           `Cobb Douglas`      = exp(fitted.values(loglog)),
+                           Translog            = exp(fitted.values(translog)),
+                           `Mixed-power`       = exp(fitted.values(perlog)),
+                           Linlog              = fitted.values(linlog),
+                           Loglin              = exp(fitted.values(loglin)),
+                           Quadratic           = fitted.values(quadratic),
+                           Cubic               = fitted.values(cube),
+                           `Square root`       = fitted.values(`square root`),
+                           `Cubic root`        = fitted.values(`cubic root`),
+                           `Reciprocal in X`   =
+                             fitted.values(`reciprocal in X`),
+                           `Reciprocal in Y`   =
+                             1 / fitted.values(`reciprocal in Y`),
+                           `Double reciprocal` =
+                             1 / fitted.values(`double reciprocal`))
+
+      if (is.null(AA)) {
+        Predicted <- data.frame(Observed                  = y1,
+                                Linear                    = predict(Linear),
+                                `Linear with interaction` = predict(LinearI),
+                                `Cobb Douglas`      = exp(predict(loglog)),
+                                Translog            = exp(predict(translog)),
+                                `Mixed-power`       = exp(predict(perlog)),
+                                Linlog              = predict(linlog),
+                                Loglin              = exp(predict(loglin)),
+                                Quadratic           = predict(quadratic),
+                                Cubic               = predict(cube),
+                                `Square root`       = predict(`square root`),
+                                `Cubic root`        = predict(`cubic root`),
+                                `Reciprocal in X`
+                                = predict(`reciprocal in X`),
+                                `Reciprocal in Y`   =
+                                  1 / predict(`reciprocal in Y`),
+                                `Double reciprocal` =
+                                  1 / predict(`double reciprocal`))
+      } else {
+
+        Predicted <- data.frame(Observed                  = y1,
+                                Linear         = predict(Linear, Test),
+                                `Linear with interaction`
+                                = predict(LinearI, Test),
+                                `Cobb Douglas` = exp(predict(loglog, Test_ll)),
+                                Translog = exp(predict(translog, Test_t)),
+                                `Mixed-power`  = exp(predict(perlog, Test_p)),
+                                Linlog   = predict(linlog, Test_l),
+                                Loglin   = exp(predict(loglin, Test)),
+                                Quadratic = predict(quadratic, Test_q),
+                                Cubic   = predict(cube, Test_c),
+                                `Square root` = predict(`square root`, Test_s),
+                                `Cubic root`  = predict(`cubic root`, Test_cr),
+                                `Reciprocal in X` =
+                                  predict(`reciprocal in X`, Test_X),
+                                `Reciprocal in Y`   =
+                                  1 / predict(`reciprocal in Y`, Test),
+                                `Double reciprocal` =
+                                  1 / predict(`double reciprocal`, Test_X))
+      }
+
+      Effects <-      data.frame(Observed                  = y1,
+                                 Linear                   = Linear[["effects"]],
+                                 `Linear with interaction` =
+                                   LinearI[["effects"]],
+                                 `Cobb Douglas`      = exp(loglog[["effects"]]),
+                                 Translog          = exp(translog[["effects"]]),
+                                 `Mixed-power`       = exp(perlog[["effects"]]),
+                                 Linlog              = linlog[["effects"]],
+                                 Loglin            = exp(loglin[["effects"]]),
+                                 Quadratic           = quadratic[["effects"]],
+                                 Cubic               = cube[["effects"]],
+                                 `Square root`    = `square root`[["effects"]],
+                                 `Cubic root`       = `cubic root`[["effects"]],
+                                 `Reciprocal in X`   =
+                                   `reciprocal in X`[["effects"]],
+                                 `Reciprocal in Y`   =
+                                   1 / `reciprocal in Y`[["effects"]],
+                                 `Double reciprocal` =
+                                   1 / `double reciprocal`[["effects"]])
+
+      evaluation <- data.frame(cbind(Linear             = Linears,
+                                     `Cobb Douglas`     = loglogs,
+                                     Linlog             = linlogs,
+                                     Loglin             = loglins,
+                                     `Reciprocal in X`  = reciX,
+                                     `Reciprocal in Y`  = reciY,
+                                     `Double reciprocal` = reciD,
+                                     Quadratic          = quadratics,
+                                     `Square root`      = squares,
+                                     `Cubic root`       = cubics,
+                                     Cubic              = cubes,
+                                     `Mixed-power`      = perlogs,
+                                     Translog           = translogs,
+                                     `Linear with interaction` = LinearIs))
+
+      e_table <- list(e_table1, e_table2, e_table3, e_table4, e_table5)
+
+      Anova <- stats::anova(Linear, LinearI, loglog, perlog, translog, linlog,
+                            loglin, quadratic,
+                            cube, `square root`, `cubic root`,
+                            `reciprocal in X`,
+                            `reciprocal in X`, `double reciprocal`)
+      Anova <- tibble::rownames_to_column(Anova, var = "Model")
+      Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+      evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+
+      ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+    } else {
+      m_list <- list(Linear               = Linear,
+                     `Cobb Douglas`       = loglog,
+                     Linlog               = linlog,
+                     Loglin               = loglin,
+                     `Reciprocal in X`    = `reciprocal in X`,
+                     `Reciprocal in Y`    = `reciprocal in Y`,
+                     `Double reciprocal`  = `double reciprocal`,
+                     Quadratic            = quadratic,
+                     `Square root`        = `square root`,
+                     `Cubic root`         = `cubic root`,
+                     Cubic                = cube,
+                     `Mixed-power`        = perlog)
+
+      Fitted <- data.frame(Observed            = y1,
+                           Linear              = fitted.values(Linear),
+                           `Cobb Douglas`      = exp(fitted.values(loglog)),
+                           `Mixed-power`       = exp(fitted.values(perlog)),
+                           Linlog              = fitted.values(linlog),
+                           Loglin              = exp(fitted.values(loglin)),
+                           Quadratic           = fitted.values(quadratic),
+                           Cubic               = fitted.values(cube),
+                           `Square root`       = fitted.values(`square root`),
+                           `Cubic root`        = fitted.values(`cubic root`),
+                           `Reciprocal in X`   =
+                             fitted.values(`reciprocal in X`),
+                           `Reciprocal in Y`   =
+                             1 / fitted.values(`reciprocal in Y`),
+                           `Double reciprocal` =
+                             1 / fitted.values(`double reciprocal`))
+
+      if (is.null(AA)) {
+        Predicted <- data.frame(Observed            = y1,
+                                Linear              = predict(Linear),
+                                `Cobb Douglas`      = exp(predict(loglog)),
+                                `Mixed-power`       = exp(predict(perlog)),
+                                Linlog              = predict(linlog),
+                                Loglin              = exp(predict(loglin)),
+                                Quadratic           = predict(quadratic),
+                                Cubic               = predict(cube),
+                                `Square root`       = predict(`square root`),
+                                `Cubic root`        = predict(`cubic root`),
+                                `Reciprocal in X`   =
+                                  predict(`reciprocal in X`),
+                                `Reciprocal in Y`   =
+                                  1 / predict(`reciprocal in Y`),
+                                `Double reciprocal` =
+                                  1 / predict(`double reciprocal`))
+      } else {
+
+        Predicted <- data.frame(Observed            = y1,
+                                Linear              = predict(Linear, Test),
+                                `Cobb Douglas`  = exp(predict(loglog, Test_ll)),
+                                `Mixed-power`   = exp(predict(perlog, Test_p)),
+                                Linlog              = predict(linlog, Test_l),
+                                Loglin            = exp(predict(loglin, Test)),
+                                Quadratic          = predict(quadratic, Test_q),
+                                Cubic               = predict(cube, Test_c),
+                                `Square root` = predict(`square root`, Test_s),
+                                `Cubic root`  = predict(`cubic root`, Test_cr),
+                                `Reciprocal in X`   =
+                                  predict(`reciprocal in X`, Test_X),
+                                `Reciprocal in Y`   =
+                                  1 / predict(`reciprocal in Y`, Test),
+                                `Double reciprocal` =
+                                  1 / predict(`double reciprocal`, Test_X))
+      }
+
+      Effects <-      data.frame(Observed            = y1,
+                                 Linear              = Linear[["effects"]],
+                                 `Cobb Douglas`      = exp(loglog[["effects"]]),
+                                 `Mixed-power`       = exp(perlog[["effects"]]),
+                                 Linlog              = linlog[["effects"]],
+                                 Loglin              = exp(loglin[["effects"]]),
+                                 Quadratic           = quadratic[["effects"]],
+                                 Cubic               = cube[["effects"]],
+                                 `Square root`    = `square root`[["effects"]],
+                                 `Cubic root`     = `cubic root`[["effects"]],
+                                 `Reciprocal in X`   =
+                                   `reciprocal in X`[["effects"]],
+                                 `Reciprocal in Y`   =
+                                   1 / `reciprocal in Y`[["effects"]],
+                                 `Double reciprocal` =
+                                   1 / `double reciprocal`[["effects"]])
+
+      evaluation <- data.frame(cbind(Linear              = Linears,
+                                     `Cobb Douglas`      = loglogs,
+                                     Linlog              = linlogs,
+                                     Loglin              = loglins,
+                                     `Reciprocal in X`   = reciX,
+                                     `Reciprocal in Y`   = reciY,
+                                     `Double reciprocal` = reciD,
+                                     Quadratic           = quadratics,
+                                     `Square root`       = squares,
+                                     `Cubic root`        = cubics,
+                                     Cubic               = cubes,
+                                     `Mixed-power`       = perlogs))
+
+      Anova <- stats::anova(Linear, loglog, perlog, linlog, loglin,
+                            quadratic, cube, `square root`, `cubic root`,
+                            `reciprocal in X`, `reciprocal in X`,
+                            `double reciprocal`)
+      Anova <- tibble::rownames_to_column(Anova, var = "Model")
+      Anova <- modelsummary::datasummary_df(Anova, stars = TRUE)
+
+      evaluation <- tibble::rownames_to_column(evaluation, var = "Name")
+
+      ModelTable <- modelsummary::modelsummary(m_list, stars = TRUE)
+    }
+
+    Fitted <- tidyr::pivot_longer(Fitted, -Observed, names_to = "Model",
+                                  values_to = "Fitted")
+
+    Predicted <- tidyr::pivot_longer(Predicted, -Observed, names_to = "Model",
+                                     values_to = "Predicted")
+
+    Effects <- tidyr::pivot_longer(Effects, -Observed, names_to = "Model",
+                                   values_to = "Effects")
+  }
+
+  ezhe <- list("Visual means of the numeric variable" = e_meanplot,
+               "Correlation plot" = e_corplot,
+               "Summary of numeric variables" = KNN1,
+               "Summary of character variables" = KKC,
+               "Linear" = Linear,
+               "Significant plot of Linear" = v_Linear)
+  if (mod == 0) {
+    results <- list("Visual means of the numeric variable" = e_meanplot,
+         "Correlation plot" = e_corplot,
+         "Summary of numeric variables" = KNN1,
+         "Summary of character variables" = KKC)
+  } else if (mod == 1) {
+    result <- list("Linear with interaction" = LinearI,
+         "Significant plot of Linear with interaction" = v_LinearI)
+  } else if (mod == 2) {
+    result <- list("Semilog" = linlog,
+         "Significant plot of Semilog" = v_linlog,
+         "Growth" = loglin,
+         "Significant plot of Growth" = v_loglin,
+         "Double Log" = loglog,
+         "Significant plot of Double Log" = v_loglog,
+         "Mixed-power model" = perlog,
+         "Significant plot of Mixed-power model" = v_perlog,
+         "Translog model" = translog,
+         "Significant plot of Translog model" = v_translog)
+  } else if (mod == 3) {
+    result <- list("Quadratic" = quadratic,
+         "Significant plot of Quadratic" = v_quadratic,
+         "Cubic model" = cube,
+         "Significant plot of Cubic model" = v_cube)
+  } else if (mod == 4) {
+    result <- list("Square root" = `square root`,
+         "Significant plot of Square root" = v_square,
+         "Cubic root" = `cubic root`,
+         "Significant plot of Cubic root" = v_cubic)
+  } else if (mod == 5) {
+    result <-  list("Inverse y" = `reciprocal in Y`,
+         "Significant plot of Inverse y" = v_reciY,
+         "Inverse x" = `reciprocal in X`,
+         "Significant plot of Inverse x" = v_reciX,
+         "Inverse y & x" = `double reciprocal`,
+         "Significant plot of Inverse y & x" = v_reciD)
+  } else {
+    result <- list("Linear with interaction" = LinearI,
+         "Significant plot of Linear with interaction" = v_LinearI,
+         "Semilog" = linlog,
+         "Significant plot of Semilog" = v_linlog,
+         "Growth" = loglin,
+         "Significant plot of Growth" = v_loglin,
+         "Double Log" = loglog,
+         "Significant plot of Double Log" = v_loglog,
+         "Mixed-power model" = perlog,
+         "Significant plot of Mixed-power model" = v_perlog,
+         "Translog model" = translog,
+         "Significant plot of Translog model" = v_translog,
+         "Quadratic" = quadratic,
+         "Significant plot of Quadratic" = v_quadratic,
+         "Cubic model" = cube,
+         "Significant plot of Cubic model" = v_cube,
+         "Square root" = `square root`,
+         "Significant plot of Square root" = v_square,
+         "Cubic root" = `cubic root`,
+         "Significant plot of Cubic root" = v_cubic,
+         "Inverse y" = `reciprocal in Y`,
+         "Significant plot of Inverse y" = v_reciY,
+         "Inverse x" = `reciprocal in X`,
+         "Significant plot of Inverse x" = v_reciX,
+         "Inverse y & x" = `double reciprocal`,
+         "Significant plot of Inverse y & x" = v_reciD)
+  }
+
+  if (mod != 0) {
+    fitted_long    <- fitted_long(Fitted)
+    fitted_wide    <- fitted_wide(Fitted)
+    Predicted_long <- Predicted_long(Predicted)
+    Predicted_wide <- Predicted_wide(Predicted)
+    Effects_long   <- Effects_long(Effects)
+    Effects_wide   <- Effects_wide(Effects)
+
+    if (case != "complex") {
+      rezult <- list("Model Table" = ModelTable,
+                     "Machine Learning Metrics" =  evaluation,
+                     "Tables of marginal effects" = e_table,
+                     "Fitted plots long format" = fitted_long,
+                     "Fitted plots wide format" = fitted_wide,
+                     "Prediction plots long format" = Predicted_long,
+                     "Prediction plots wide format" = Predicted_wide,
+                     "Naive effects plots long format" = Effects_long,
+                     "Naive effects plots wide format" = Effects_wide)
+    } else {
+      rezult <- list("Model Table" = ModelTable,
+                     "Machine Learning Metrics" =  evaluation,
+                     "Fitted plots long format" = fitted_long,
+                     "Fitted plots wide format" = fitted_wide,
+                     "Prediction plots long format" = Predicted_long,
+                     "Prediction plots wide format" = Predicted_wide,
+                     "Naive effects plots long format" = Effects_long,
+                     "Naive effects plots wide format" = Effects_wide)
+    }
+    results <- c(ezhe, result, rezult)
+  }
+  return(results)
+}
+
+mmmd <- function(family = NULL, face = NULL, size = NULL, colour = NULL,
+                  fill = NULL, box.colour = NULL, linetype = NULL,
+                  linewidth = NULL,
+                  hjust = NULL, vjust = NULL, halign = NULL, valign = NULL,
+                  angle = NULL, lineheight = NULL, margin = NULL,
+                  padding = NULL,
+                  r = NULL, color = NULL, box.color = NULL, align_widths = NULL,
+                  align_heights = NULL, rotate_margins = NULL, debug = FALSE,
+                  inherit.blank = FALSE)
+{
+  if (!is.null(color))
+    colour <- color
+  if (!is.null(box.color))
+    box.colour <- box.color
+  structure(list(family = family, face = face, size = size,
+                 colour = colour, fill = fill, box.colour = box.colour,
+                 linetype = linetype, linewidth = linewidth, hjust = hjust,
+                 vjust = vjust, halign = halign, valign = valign, angle = angle,
+                 lineheight = lineheight, margin = margin, padding = padding,
+                 r = r, align_widths = align_widths,
+                 align_heights = align_heights,
+                 rotate_margins = rotate_margins, debug = debug,
+                 inherit.blank = inherit.blank),
+            class = c("element_markdown", "element_text", "element"))
+}
+
+fitted_long <- function(Fitted) {
+  ggplot2::ggplot(Fitted) +
+    ggplot2::aes(x = Observed,
+                 y = Fitted,
+                 fill = Model,
+                 colour = Model,
+                 group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal()
+}
+
+fitted_wide <- function(Fitted) {
+  ggplot2::ggplot(Fitted) +
+    ggplot2::aes(
+      x = Observed,
+      y = Fitted,
+      fill = Model,
+      colour = Model,
+      group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal() +
+    ggplot2::facet_wrap(ggplot2::vars(Model))
+}
+
+Predicted_long <- function(Predicted) {
+  ggplot2::ggplot(Predicted) +
+    ggplot2::aes(x = Observed,
+                 y = Predicted,
+                 fill = Model,
+                 colour = Model,
+                 group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal()
+}
+
+Predicted_wide <- function(Predicted) {
+  ggplot2::ggplot(Predicted) +
+    ggplot2::aes(x = Observed,
+                 y = Predicted,
+                 fill = Model,
+                 colour = Model,
+                 group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal() +
+    ggplot2::facet_wrap(ggplot2::vars(Model))
+}
+
+Effects_long <- function(Effects) {
+  ggplot2::ggplot(Effects) +
+    ggplot2::aes(x = Observed,
+                 y = Effects,
+                 fill = Model,
+                 colour = Model,
+                 group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal()
+}
+
+Effects_wide <- function(Effects) {
+  ggplot2::ggplot(Effects) +
+    ggplot2::aes(x = Observed,
+                 y = Effects,
+                 fill = Model,
+                 colour = Model,
+                 group = Model) +
+    ggplot2::geom_line(linewidth = 1.5) +
+    ggplot2::scale_fill_hue(direction = 1) +
+    ggplot2::scale_color_hue(direction = 1) +
+    ggplot2::theme_minimal() +
+    ggplot2::facet_wrap(ggplot2::vars(Model))
+}

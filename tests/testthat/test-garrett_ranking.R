@@ -1,0 +1,42 @@
+
+test_that("garrett_ranking works", {
+  library(readr)
+  library(Dyn4cast)
+  garrett_data <- data.frame(garrett_data)
+  ranking <- c("Serious constraint", "Constraint",
+               "Not certain it is a constraint", "Not a constraint",
+               "Not a serious constraint")
+
+  test01 <- garrett_ranking(garrett_data, 2)
+  test02 <- garrett_ranking(garrett_data, 3)
+  test03 <- garrett_ranking(garrett_data, 4)
+  test04 <- garrett_ranking(garrett_data, 5, ranking)
+  test05 <- garrett_ranking(garrett_data, 5)
+  test06 <- garrett_ranking(garrett_data, 6)
+  test07 <- garrett_ranking(garrett_data, 7)
+  test08 <- garrett_ranking(garrett_data, 8)
+  test09 <- garrett_ranking(garrett_data, 9)
+  test10 <- garrett_ranking(garrett_data, 10)
+  test11 <- garrett_ranking(garrett_data, 11)
+  test12 <- garrett_ranking(garrett_data, 12)
+  test13 <- garrett_ranking(garrett_data, 13)
+  test14 <- garrett_ranking(garrett_data, 14)
+  test15 <- garrett_ranking(garrett_data, 15)
+
+  expect_identical(test01, garrett_ranking(garrett_data, 2))
+  expect_identical(test02, garrett_ranking(garrett_data, 3))
+  expect_identical(test03, garrett_ranking(garrett_data, 4))
+  expect_identical(test04, garrett_ranking(garrett_data, 5, ranking))
+  expect_identical(test05, garrett_ranking(garrett_data, 5))
+  expect_identical(test06, garrett_ranking(garrett_data, 6))
+  expect_identical(test07, garrett_ranking(garrett_data, 7))
+  expect_identical(test08, garrett_ranking(garrett_data, 8))
+  expect_identical(test09, garrett_ranking(garrett_data, 9))
+  expect_identical(test10, garrett_ranking(garrett_data, 10))
+  expect_identical(test11, garrett_ranking(garrett_data, 11))
+  expect_identical(test12, garrett_ranking(garrett_data, 12))
+  expect_identical(test13, garrett_ranking(garrett_data, 13))
+  expect_identical(test14, garrett_ranking(garrett_data, 14))
+  expect_identical(test15, garrett_ranking(garrett_data, 15))
+}
+)
