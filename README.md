@@ -1,31 +1,35 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- This README requires access to the vignettes in the package. Please run
+     devtools::install(build_vignettes = TRUE) before knitting this to README.md -->
+
 # Dyn4cast <img src="man/figures/logo.png" align="right" alt="" width="150" height="150" />
+
+<!-- Version 0.8-6 
+&#10;Version 11.11.26; documentation built for `Dyn4cast` 2026-11-05    -->
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/JobNmadu/Dyn4cast/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JobNmadu/Dyn4cast/actions/workflows/R-CMD-check.yaml)
-
 [![registry status
 badge](https://jobnmadu.r-universe.dev/badges/:registry)](https://jobnmadu.r-universe.dev/)
-
 [![name status
 badge](https://jobnmadu.r-universe.dev/badges/:name)](https://jobnmadu.r-universe.dev/)
-
 [![GitHub release (latest by
 date)](https://img.shields.io/github/v/release/JobNmadu/Dyn4cast?color=green)](https://github.com/JobNmadu/Dyn4cast/releases)
+[![codecov](https://codecov.io/gh/JobNmadu/Dyn4cast/graph/badge.svg?token=RYV9KWHBN5)](https://app.codecov.io/gh/JobNmadu/Dyn4cast)
+[![lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Project Status:
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/Dyn4cast)](https://r-pkg.org/pkg/Dyn4cast)
+<!-- badges: end --> <!--
+[![codecov](https://codecov.io/gh/JobNmadu/Dyn4cast/graph/badge.svg?token=RYV9KWHBN5)](https://app.codecov.io/gh/JobNmadu/Dyn4cast)
 
-<!--
-&#10;[![codecov](https://codecov.io/gh/JobNmadu/Dyn4cast/graph/badge.svg?token=RYV9KWHBN5)](https://codecov.io/gh/JobNmadu/Dyn4cast)
-&#10;[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-&#10;-->
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-
-<!-- badges: end -->
+-->
 
 The **Dyn4cast** package is designed to be a lightweight package. The
 philosophy behind it was the need to provide quick updates and
@@ -48,15 +52,15 @@ machine learning tasks.
 
 ## Installation
 
-Although the released version of *Dyn4cast* could be installed from
-[CRAN](https://CRAN.R-project.org), the plans to submit it to *CRAN* is
-underway. Therefore, only the development version is currently running.
-The canonical form for [CRAN](https://CRAN.R-project.org) is:
+The released version of *Dyn4cast* can be installed from
+[CRAN](https://CRAN.R-project.org/package=Dyn4cast/index.html). The
+canonical form for
+[CRAN](https://CRAN.R-project.org/package=Dyn4cast/index.html) is:
 
     install.packages("Dyn4cast")
 
-The development version is the only one available now and can be
-installed from [GitHub](https://github.com/) with:
+The development version is available now and can be installed from
+[GitHub](https://github.com/JobNmadu/Dyn4cast) with:
 
 ``` r
 # install.packages("devtools")
@@ -113,7 +117,7 @@ At present, the package exports the following functions:
 
 11. `garrett_ranking` is for ranking Likert-type data.
 
-12. `Model_factors` is for determining and retrieving latent factors
+12. `model_factors` is for determining and retrieving latent factors
     from Likert-type data for estimation and Machine Learning.
 
 13. `treatment_model` is for propensity matching treatments effects and
@@ -146,17 +150,19 @@ citation("Dyn4cast")
 #> To cite package 'Dyn4cast' in publications use:
 #> 
 #>   Nmadu J (2026). _Dyn4cast: Dynamic Modeling and Machine Learning
-#>   Environment_. R package version 11.11.26,
-#>   <https://github.com/JobNmadu/Dyn4cast>.
+#>   Environment_. doi:10.32614/CRAN.package.Dyn4cast
+#>   <https://doi.org/10.32614/CRAN.package.Dyn4cast>. R package version
+#>   11.11.26, <https://jobnmadu.github.io/Dyn4cast/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {Dyn4cast: Dynamic Modeling and Machine Learning Environment},
+#>     note = {R package version 11.11.26},
 #>     author = {Job Nmadu},
 #>     year = {2026},
-#>     note = {R package version 11.11.26},
-#>     url = {https://github.com/JobNmadu/Dyn4cast},
+#>     doi = {10.32614/CRAN.package.Dyn4cast},
+#>     url = {https://jobnmadu.github.io/Dyn4cast/},
 #>   }
 ```
 

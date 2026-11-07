@@ -1,38 +1,44 @@
 ---
-title: "Getting started with Dyn4cast"
+title: "Getting started"
 output: rmarkdown::html_vignette
 description: |
   An overview of installation procedures.
 vignette: >
-  %\VignetteIndexEntry{Getting started with Dyn4cast}
+  %\VignetteIndexEntry{Getting started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(tidy      = "styler",
                       fig.align = "center",
                       comment   = NA,
                       warning   = FALSE,
                       error     = FALSE,
                       message   = FALSE,
-                      collapse  = FALSE,
+                      collapse  = TRUE,
                       out.width = "100%",
                       dev = "ragg_png", #<- prevent default Windows device to
                       # render plots
                       dpi       = 132,
                       echo      = FALSE)
+```
 
+
+```{r setup}
 old_options <- options(scipen = 999, digits = 2)
 on.exit(options(old_options))
 
 olds <- options(rmarkdown.html_vignette.check_title = FALSE)
 on.exit(options(olds))
+
+library(Dyn4cast)
+library(tidyverse, quietly = T)
 ```
 
 ## Installation
 
-`Dyn4cast` is not yet on CRAN, so only the development version is available. However, the package is very functional and stable and is actively being watched for any issue. Presently, it has passed all the tests it was subjected to as can be seen here.
+`Dyn4cast` is on CRAN and the development version is available. The package is very functional and stable and is actively being watched for any issue. Presently, it has passed all the tests it was subjected to.
 
 <!--  
 
@@ -41,10 +47,14 @@ on.exit(options(olds))
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/JobNmadu/Dyn4cast/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JobNmadu/Dyn4cast/actions/workflows/R-CMD-check.yaml)
-
 [![registry status badge](https://jobnmadu.r-universe.dev/badges/:registry)](https://jobnmadu.r-universe.dev/)
-
+[![name status badge](https://jobnmadu.r-universe.dev/badges/:name)](https://jobnmadu.r-universe.dev/)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/JobNmadu/Dyn4cast?color=green)](https://github.com/JobNmadu/Dyn4cast/releases)
+[![codecov](https://codecov.io/gh/JobNmadu/Dyn4cast/graph/badge.svg?token=RYV9KWHBN5)](https://app.codecov.io/gh/JobNmadu/Dyn4cast)
+[![lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/Dyn4cast)](https://r-pkg.org/pkg/Dyn4cast)
+<!-- badges: end -->
 
 <!--
 [![codecov](https://codecov.io/gh/JobNmadu/Dyn4cast/graph/badge.svg?token=RYV9KWHBN5)](https://codecov.io/gh/JobNmadu/Dyn4cast)
@@ -53,12 +63,13 @@ on.exit(options(olds))
 
 -->
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+The released version of _Dyn4cast_ can be installed from [CRAN](https://CRAN.R-project.org/package=Dyn4cast/index.html). The canonical form for  [CRAN](https://CRAN.R-project.org/package=Dyn4cast/index.html) is:
 
-<!-- badges: end -->
+```
+install.packages("Dyn4cast")
+```
 
-
-To install the development version of `Dyn4cast` from GitHub, use the following canonical form:
+To install the development version of `Dyn4cast` from [GitHub](https://github.com/JobNmadu/Dyn4cast), use the following canonical form:
  
 ```{r github, echo = TRUE, eval = FALSE}
 
@@ -66,7 +77,7 @@ To install the development version of `Dyn4cast` from GitHub, use the following 
 pak::pak("JobNmadu/Dyn4cast")
 ```
 
-The development version can also be installed through r-universe. Use the form:
+The development version can also be installed through [r-universe](https://jobnmadu.r-universe.dev/Dyn4cast). Use the form:
 
 ```{r universe, echo = TRUE, eval = FALSE}
 

@@ -1,18 +1,18 @@
-## ----setup, include=FALSE-----------------------------------------------------
-
+## ----include=FALSE------------------------------------------------------------
 knitr::opts_chunk$set(tidy      = "styler",
                       fig.align = "center",
                       comment   = NA,
                       warning   = FALSE,
                       error     = FALSE,
                       message   = FALSE,
-                      collapse  = FALSE,
+                      collapse  = TRUE,
                       out.width = "100%",
                       dev = "ragg_png", #<- prevent default Windows device to
                       # render plots
                       dpi       = 132,
                       echo      = FALSE)
 
+## ----setup--------------------------------------------------------------------
 old_options <- options(scipen = 999, digits = 2)
 on.exit(options(old_options))
 
@@ -22,11 +22,6 @@ on.exit(options(olds))
 library(Dyn4cast)
 library(tidyverse, quietly = T)
 
-
-## ----github, echo = TRUE, eval = FALSE----------------------------------------
-# 
-# # install.packages("devtools")
-# devtools::install_github("JobNmadu/Dyn4cast")
 
 ## ----universe, echo = TRUE, eval = FALSE--------------------------------------
 # 

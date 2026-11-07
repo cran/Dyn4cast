@@ -1,6 +1,17 @@
-# Dyn4cast 11.11.28-iota 2026-07-15
+# Dyn4cast 11.11.28
 
-Due to compatibility with `dfidx` which is used in the `mlogit` package for obtaining __odds ratio__, the package dependency is raise to R >= 4.2. The test cycle is now between `R4.2 and R4.6`.
+# Dyn4cast 11.11.28-rho 2026-08-07
+
+The vignette is now updated to the current version. Citation file is added.
+
+# Dyn4cast 11.11.28-omicron 2026-07-23
+
+History is made. The package climbs into CRAN today. Minor fixes to vignette.
+
+
+# Dyn4cast 11.11.28-lambda 2026-07-15
+
+Due to compatibility with `dfidx` which is used in the `mlogit` package for obtaining __odds ratio__, the package dependency is raise to R >= 4.2. The test cycle is now between `R4.2 and R4.6`. Enhanced hex sticker.
 
 # Dyn4cast 11.11.28-iota 2026-07-03
 
