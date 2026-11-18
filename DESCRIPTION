@@ -1,6 +1,6 @@
 Package: Dyn4cast
 Title: Dynamic Modeling and Machine Learning Environment
-Version: 11.11.28
+Version: 11.11.28-1
 Date: 2026-11-05
 Authors@R: 
     person(given = "Job",
@@ -31,8 +31,8 @@ BugReports: https://github.com/JobNmadu/Dyn4cast/issues
 Language: en-US
 Config/roxygen2/version: 8.1.1
 NeedsCompilation: no
-Packaged: 2026-11-06 21:51:16 UTC; jobnm
+Packaged: 2026-11-18 15:09:33 UTC; jobnm
 Author: Job Nmadu [aut, cre] (ORCID: <https://orcid.org/0000-0002-1320-8957>)
 Maintainer: Job Nmadu <job.nmadu@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-11-07 12:10:21 UTC
+Date/Publication: 2026-11-18 15:30:08 UTC

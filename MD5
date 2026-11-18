@@ -1,6 +1,6 @@
-c96f178684d14cc56c0d9e336d0c30a2 *DESCRIPTION
+1d43f29726861115df8e895724b586fe *DESCRIPTION
 050b975b6357b8297cb038f6dad0700b *NAMESPACE
-1ab087e504779c27c59c6b019013de47 *NEWS.md
+45a171782e72776724e5d5d29f7be796 *NEWS.md
 8d08cf336b3f495cd8646208e7dec4e3 *R/Dyn4cast-package.R
 3e7b9a788441e616ee9b295ac9bfc1f7 *R/DynamicForecast.R
 0ab9e8cf5e61907c19e5fcaa1794f0cb *R/Linearsystems.R
@@ -22,7 +22,7 @@ e146bfe656f95be08e8d1cdbfaa16ca4 *R/model_factors.R
 8e024ef6ef24673f93201dbd7dbb0ba0 *R/quicksummary.R
 6b45dda3da4419bb99e2466f4a20c11a *R/relative_likert.R
 98c421029c14011043d9540b72c4e191 *R/treatmemt_model.R
-2004b67566ddae1089f93871fe823828 *README.md
+f019008d9c85aefcdf7addeafdf515e4 *README.md
 84a4f00e56ddaf2bd81c190c9a79495e *build/vignette.rds
 f001347b773eb05e176a42cbf6ce1d61 *data/COVID19.rda
 b20bc7ed43712d7d58e9f4f4e7d50758 *data/Data.rda
@@ -35,17 +35,17 @@ b0a61fadf32867fe7464accbf834eb5a *data/linearsystems.rda
 10b810af88cfd34659a42e28fe0a9052 *data/quicksummary.rda
 0b505054a1470cdc923212bcaf9b6c59 *data/sampling.rda
 4a356ed6177264231a5724c0966246a4 *data/treatments.rda
-91af8b951fe72ee1a3d73ef43158941b *inst/CITATION
+246d3d71800d78896b0d169511bfd8a4 *inst/CITATION
 5df8937a3dac9aeb5c97af1beea9e647 *inst/COVID19.RDS
 4c55c725336aeff00d2323993e9aa016 *inst/Data.RDS
 1f284527738cbeabc196172bd5a1ac20 *inst/Transform.RDS
 601f46612727e7718d5512e3b687c7d2 *inst/WORDLIST
 cca0a0a323d529e1162b7a150232e1b4 *inst/doc/Dyn4cast.R
 5af3654582fa45cd7769f779deb48e1b *inst/doc/Dyn4cast.Rmd
-13afa2e3a057c3783ae1d7d1794e4ddf *inst/doc/Dyn4cast.html
+b856deb6ab1d8951061cadf0809b175f *inst/doc/Dyn4cast.html
 d04d08282be29438422b655202cac4b8 *inst/doc/starting.R
 41ec5704f366147c147298019f550121 *inst/doc/starting.Rmd
-a671d1805850a491591d4e0b2656c4ad *inst/doc/starting.html
+3d5de4f835be160415d96da174509774 *inst/doc/starting.html
 4d5089b5548ee4d66f894a97226c3315 *inst/docs/404.html
 377706ba567cf0cc3c156d4d5a864b62 *inst/docs/CODE_OF_CONDUCT.html
 3c6f35560a65f3a29614d10f60f67986 *inst/docs/LICENSE-text.html
@@ -196,7 +196,7 @@ ccd709117bcb90ff78f9d028cdda82b3 *man/relative_likert.Rd
 1ab655f106beadb2f237fb37bced6d2c *man/treatment_model.Rd
 203795642e2a87ade8402ca607a31765 *tests/spelling.R
 51101aa0af422052f2df90f746b49911 *tests/testthat.R
-4f67025ff13960f897e2f7e2b3c3cb7b *tests/testthat/Rplots.pdf
+326a75baccb4d78beffa894a48df430f *tests/testthat/Rplots.pdf
 3d8651a888b38d76ad5c57ac210952ec *tests/testthat/data/day_01.csv
 4d2dcc7134f9882c7c51bec0ff636e1c *tests/testthat/data/day_02.csv
 44136c5256cac778971cdaa875fe8c50 *tests/testthat/data/day_03.csv
